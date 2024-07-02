@@ -1,0 +1,110 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Wise Kiosk</title>
+    <style>
+        /* Apply a consistent width and height for all buttons */
+        button {
+            display: block;
+            /* Makes each button appear on a separate line */
+            width: 200px;
+            /* Adjust this value as needed */
+            height: 50px;
+            /* Adjust this value as needed */
+            margin-bottom: 2px;
+            /* Space between each button */
+            text-align: center;
+            /* Center the text */
+            border: 1px solid #ccc;
+            /* Sample border, adjust as needed */
+            background-color: #f5f5f5;
+            /* Sample background color, adjust as needed */
+            cursor: pointer;
+            /* Makes the button show a hand cursor on hover */
+            border-radius: 5px;
+            /* Gives the button rounded corners */
+            font-size: 16px;
+            /* Adjust font size as needed */
+            transition: background-color 0.3s;
+            /* Smooth transition for hover effect */
+        }
+
+        /* Hover effect for buttons */
+        button:hover {
+            background-color: #e0e0e0;
+            /* Sample hover color, adjust as needed */
+        }
+    </style>
+</head>
+
+<body>
+    <button id="openAppButton">Open Kiosk App</button><br>
+    <button id="connectSerialDevice">Connect Device</button><br>
+    <button id="disconnectSerialDevice">Disconnect <span id="connectedCount"></span> Devices</button>
+    <script>
+        const { invoke } = window.__TAURI__.tauri;
+        const event = window.__TAURI__.event;
+        document.getElementById('openAppButton').addEventListener('click', () => {
+            invoke('open_app_window');
+        });
+        document.getElementById('connectSerialDevice').addEventListener('click', () => {
+            const usbVendorId = 0xabcd;
+            navigator.serial.requestPort(
+                // { filters: [{ usbVendorId }] }
+            ).then((port) => { location.reload(); }).catch((e) => { console.log(e); });
+        });
+        document.getElementById('disconnectSerialDevice').addEventListener('click', () => {
+            navigator.serial.getPorts().then((ports) => {
+                ports.forEach(async (port) => {
+                    await port.forget();
+                });
+                location.reload();
+            });
+        });
+
+        navigator.serial.getPorts().then((ports) => {
+            document.getElementById('connectedCount').innerText = ports.length;
+            ports.forEach(async (port) => {
+                // connect to the device
+                try {
+                    await port.open({ baudRate: 9600 });
+                }
+                catch (e) {
+                    console.log(e);
+                    port.forget();
+                    location.reload();
+                }
+                while (port.readable) {
+                    const reader = port.readable.getReader();
+                    console.log('[readLoop] STARTED');
+                    try {
+                        while (true) {
+                            const { value, done } = await reader.read();
+                            if (done) {
+                                console.log('[readLoop] DONE', done);
+                                break;
+                            }
+                            try {
+                                const decoder = new TextDecoder();
+                                const string = decoder.decode(value);
+                                console.log(string);
+                                invoke('serial_string', { message: string });
+
+                            } catch (e) {
+                                console.log(e);
+                            }
+                        }
+                    } catch (error) {
+                        console.error('[readLoop] ERROR READING', error);
+                    } finally {
+                        reader.releaseLock();
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

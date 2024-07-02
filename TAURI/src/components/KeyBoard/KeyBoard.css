@@ -1,0 +1,118 @@
+.keyboard {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-gap: 10px;
+  padding: 10px;
+}
+
+.row {
+  display: flex;
+}
+
+button {
+  flex: 1;
+  height: 40px;
+  font-size: 16px;
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.ctrl-key {
+  background-color: #a0a0a0;
+  color: #fff;
+}
+
+.shift-key {
+  background-color: #a0a0a0;
+  color: #fff;
+}
+
+.backspace-key {
+  flex: 2;
+}
+
+.close-button {
+  width: 100%;
+  margin-top: 10px;
+  height: 40px;
+  font-size: 16px;
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.SimpleKeyboard__button {
+  height: 60px; /* Adjust the height as per your preference */
+}
+
+.hg-theme-default .hg-button {
+  height: 68px;
+}
+
+.keyboard-container {
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 30px;
+}
+
+.hg-theme-default .hg-row {
+  gap: 10px !important;
+  padding-bottom: 10px;
+}
+
+.hg-theme-default .hg-row:last-child {
+  padding-bottom: 5px;
+}
+
+.hg-rows {
+  padding: 10px !important;
+}
+
+.input-container {
+  /* justify-content: center; */
+  align-items: center;
+  gap: 20px;
+}
+
+.input-container {
+  display: flex;
+  padding-bottom: 20px;
+  padding-top: 20px;
+}
+
+.custom-input {
+  border-radius: 50px;
+  padding: 5px 40px;
+  /* font-weight: 600; */
+  font-size: 25px;
+  height: 60px;
+  color: #006cb1;
+  width: 700px;
+  border: 1.5px solid rgb(217, 212, 212);
+  background-color: #faf9f9;
+  transition: 0.2s;
+  text-align: right;
+  background-color: hsl(212, 100%, 97%);
+  border-color: #006cb1;
+  border-bottom-width: 2px;
+}
+
+.message-box{
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 10px;
+  justify-content: center;
+
+}
+
+.message-box p{ 
+  font-size: 30px;
+  padding-top: 18px;
+  font-weight: 400;
+  color: rgb(125, 124, 124);
+  text-transform: uppercase;
+}

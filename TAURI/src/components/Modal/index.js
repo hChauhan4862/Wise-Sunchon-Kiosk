@@ -1,0 +1,1 @@
+export { default as YesNoModal } from '../Modal/YesNo'

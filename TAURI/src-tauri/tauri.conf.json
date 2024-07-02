@@ -1,0 +1,56 @@
+{
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build",
+    "devPath": "http://localhost:1420",
+    "distDir": "../dist",
+    "withGlobalTauri": true
+  },
+  "package": {
+    "productName": "Neosco Kiosk",
+    "version": "1.0.5"
+  },
+  "tauri": {
+    "allowlist": {
+      "window": {
+        "all": true,
+        "create": true
+      },
+      "all": false,
+      "shell": {
+        "all": false,
+        "open": true
+      },
+      "http": {
+        "all": true,
+        "request": true,
+        "scope": [
+          "https://*",
+          "http://*"
+        ]
+      }
+    },
+    "bundle": {
+      "active": true,
+      "targets": "all",
+      "identifier": "com.wise.hc.kiosk",
+      "icon": [
+        "icons/32x32.png",
+        "icons/128x128.png",
+        "icons/128x128@2x.png",
+        "icons/icon.icns",
+        "icons/icon.ico"
+      ],
+      "windows": {
+        "nsis": {
+          "displayLanguageSelector": true,
+          "languages": [
+            "English",
+            "Korean"
+          ]
+        }
+      },
+      "publisher": "Wise Neosco India PVT LTD"
+    }
+  }
+}
